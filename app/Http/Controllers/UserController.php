@@ -6,6 +6,8 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use PDF;
 
+use Maatwebsite\Excel\Facades\Excel;
+
 class UserController extends Controller
 {
 
@@ -39,5 +41,23 @@ class UserController extends Controller
                     'error' => 'data tidak dihapus'
                 ]);
         }
+    }
+
+    public function preview(Request $request){
+        $path = $request->file('file')->getRealPath();
+        $data = Excel::toArray('', $path, null, \Maatwebsite\Excel\Excel::TSV)[0];
+        $header = $data[0];
+        var_dump(count($header));
+
+        for($i = 1; $i < count($data); $i++){
+            $content[$i]['name'] = $data[$i][0];
+            $content[$i]['email'] = $data[$i][1];
+            $content[$i]['password'] = $data[$i][2];
+        }
+
+        // dd($content);
+        // echo $content;
+        // echo 'aaa';
+
     }
 }
