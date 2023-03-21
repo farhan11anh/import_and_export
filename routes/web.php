@@ -35,7 +35,7 @@ Route::post('import', function () {
     Excel::import(new UsersImport, request()->file('file'));
     // $test = Excel::toArray(new UsersImport, request()->file('file'));
     $path = request()->file('file')->getRealPath();
-    $data = Excel::toArray('', $path, null, \Maatwebsite\Excel\Excel::TSV)[0];
+    Excel::toArray('', $path, null, \Maatwebsite\Excel\Excel::TSV)[0];
 
     return redirect()->back()->with('success','Data Imported Successfully');
 });

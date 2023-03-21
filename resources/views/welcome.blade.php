@@ -37,11 +37,13 @@
                 </div>
             @endif
 
-            <form method="POST" enctype="multipart/form-data">
-                @csrf
-                <input id="filez" type="file" name="file">
-                <button id="previewd" type="submit">Preview</button>
-            </form>
+            @if (isset($_GET['msg']))
+                <div class="alert alert-success alert-dismissible fade show" role="alert">
+                    {{ $_GET['msg'] }}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            @endif
+
             <table class="table">
                 <thead>
                     <tr>
@@ -90,7 +92,6 @@
                         <div class="input-group mb-3">
                             <input type="file" name="file" id="filep" class="form-control">
                             <button id="previewz" class="btn btn-primary" type="button">Preview</button>
-                            <button id="submit-btn" class="btn btn-primary hide" type="submit">Submit</button>
                         </div>
                     </form>
 
@@ -110,6 +111,7 @@
 
                         </tbody>
                     </table>
+                    <button id="submit-btn" class="btn btn-primary hide" type="submit">Submit</button>
                 </div>
             </div>
         </div>
@@ -120,12 +122,34 @@
 
     <script src = "https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
     <script>
-        $('#previewz').click(function(e){
-            e.preventDefault();
-            console.log('aa');
+
+        $('#submit-btn').click((e)=>{
+            e.preventDefault()
             let file_data = $('#filep').prop('files')[0];
             let form_data = new FormData();
-            console.log(file_data);
+            form_data.append('file', file_data);
+            form_data.append('_token', '{{csrf_token()}}');
+            $.ajax({
+                url:'/import',
+                dataType : 'text',
+                cache : false,
+                contentType : false,
+                processData : false,
+                data : form_data,
+                type : 'post',
+                success : function(data){
+                    console.log(data);
+
+                    $(location).prop('href', 'http://127.0.0.1:8000/user?msg=Data Imported Successfully')
+                }
+            })
+
+        })
+
+        $('#previewz').click(function(e){
+            e.preventDefault();
+            let file_data = $('#filep').prop('files')[0];
+            let form_data = new FormData();
             form_data.append('file', file_data);
             form_data.append('_token', '{{csrf_token()}}');
             $.ajax({
@@ -138,11 +162,9 @@
                 type : 'post',
                 success : function(data){
                     let content = JSON.parse(data);
-                    console.log(content.content);
                     var contents = content.content;
 
-                    console.log(contents);
-
+                    // kosongkan yang ada pada tag tr content
                     $('#datazz').html('')
 
                     for([i, data] of contents.entries() ) {
@@ -160,13 +182,6 @@
 
             $('#submit-btn').removeClass('hide');
 
-            $('#datazz').html(`
-            <tr>
-                <td>1</td>
-                <td>2</td>
-                <td>3</td>
-                <td>4</td>
-            </tr>`)
         })
     </script>
 
