@@ -89,7 +89,6 @@
                         @csrf
                         <div class="input-group mb-3">
                             <input type="file" name="file" id="filep" class="form-control">
-                            <button id="submit-btn" class="btn btn-primary hide" type="submit">Submit</button>
                             <button id="previewz" class="btn btn-primary" type="submit">Preview</button>
                         </div>
                     </form>
@@ -107,8 +106,11 @@
                             <tr >
                                 <td colspan="4" class="mid" >empty</td>
                             </tr>
+
                         </tbody>
                     </table>
+                    <button id="submit-btn" class="btn btn-primary hide" type="submit">Submit</button>
+
                 </div>
             </div>
         </div>
@@ -136,8 +138,24 @@
                 data : form_data,
                 type : 'post',
                 success : function(data){
-                    data : JSON.parse(data)
-                    console.log(data.status);
+                    let content = JSON.parse(data);
+                    console.log(content.content);
+                    var contents = content.content;
+
+                    console.log(contents);
+
+                    $('#datazz').html('')
+
+                    for([i, data] of contents.entries() ) {
+                        data = `<tr>
+                                <td>${i+1}</td>
+                                <td>${data.name}</td>
+                                <td>${data.email}</td>
+                                <td>action</td>
+                        </tr>`;
+                        $('#datazz').append(data)
+                    }
+
                 }
             })
 

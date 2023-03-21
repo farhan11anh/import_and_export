@@ -50,22 +50,23 @@ class UserController extends Controller
         $header = $data[0];
         // var_dump(count($header));
 
-        for($i = 1; $i < count($data); $i++){
-            $content[$i]['name'] = $data[$i][0];
-            $content[$i]['email'] = $data[$i][1];
-            $content[$i]['password'] = $data[$i][2];
+        for($i = 0; $i < count($data)-1; $i++){
+            $j = $i+1;
+            $content[$i]['name'] = $data[$j][0];
+            $content[$i]['email'] = $data[$j][1];
+            $content[$i]['password'] = $data[$j][2];
         }
 
         // dd($content);
         // echo $content;
         // echo 'aaa';
-        // $response = [
-        //     'status' => 'success',
-        //     'msg' => 'Setting created successfully',
-        //     'content' => $content
-        // ];
+        $response = [
+            'status' => 'success',
+            'msg' => 'Setting created successfully',
+            'content' => $content
+        ];
 
-        $response['status'] = 'success';
+        // $response['status'] = 'success';
         return response()->json($response);
 
     }
