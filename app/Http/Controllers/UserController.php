@@ -44,6 +44,7 @@ class UserController extends Controller
     }
 
     public function preview(Request $request){
+        dd($request->all());
         $path = $request->file('file')->getRealPath();
         $data = Excel::toArray('', $path, null, \Maatwebsite\Excel\Excel::TSV)[0];
         $header = $data[0];
@@ -58,6 +59,11 @@ class UserController extends Controller
         // dd($content);
         // echo $content;
         // echo 'aaa';
+        $response = array(
+            'status' => 'success',
+            'msg' => 'Setting created successfully',
+        );
+        return($response);
 
     }
 }

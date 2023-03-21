@@ -5,6 +5,7 @@
     <!-- Required meta tags -->
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
 
     <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
@@ -30,10 +31,10 @@
                 </div>
             @endif
 
-            <form action="{{ route('import.preview') }}" method="POST" enctype="multipart/form-data">
+            <form method="POST" enctype="multipart/form-data">
                 @csrf
                 <input type="file" name="file">
-                <button type="submit">Preview</button>
+                <button id="preview" type="submit">Preview</button>
             </form>
             <table class="table">
                 <thead>
@@ -76,7 +77,7 @@
                     <h5 class="modal-title" id="exampleModalLabel">Import CSV</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
-                <button id="preview" class="btn btn-primary" type="submit">Preview</button>
+                <button id="" class="btn btn-primary" type="submit">Preview</button>
                 <div class="modal-body">
                     <form action="import" method="POST" enctype="multipart/form-data">
                         @csrf
@@ -97,20 +98,19 @@
     <script>
         $('#preview').click(function(e){
             e.preventDefault();
-            // console.log('aa');
-            let file_data = $('#file').prop('files')[0];
+            console.log('aa');
+            let file_data = $('#file').prop('files');
             let form_data = new FormData();
+            console.log(file_data);
             form_data.append('file', file_data);
-
+            form_data.append('_token', '{{csrf_token()}}');
             $.ajax({
-                url: '/preview',
+                url:'/previews',
                 dataType : 'text',
                 cache : false,
                 contentType : false,
                 processData : false,
-                data : {form_data : form_data,
-                    _token: '{{csrf_token()}}'
-                        },
+                data : form_data,
                 type : 'post',
                 success : function(data){
                     console.log(data);

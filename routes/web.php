@@ -25,7 +25,7 @@ Route::get('/', function () {
     return redirect('/user');
 });
 
-Route::post('preview', [UserController::class, 'preview']);
+Route::post('previews', [UserController::class, 'preview']);
 
 Route::post('import', function () {
     $fileName = time().'_'.request()->file->getClientOriginalName();
