@@ -32,23 +32,11 @@ Route::post('import', function () {
     request()->file('file')->storeAs('reports', $fileName, 'public');
 
 
-    // $test = Excel::import(new UsersImport, request()->file('file'));
-    $test = Excel::toArray(new UsersImport, request()->file('file'));
-
+    Excel::import(new UsersImport, request()->file('file'));
+    // $test = Excel::toArray(new UsersImport, request()->file('file'));
     $path = request()->file('file')->getRealPath();
     $data = Excel::toArray('', $path, null, \Maatwebsite\Excel\Excel::TSV)[0];
-    $header = $data[0];
-    var_dump(count($header));
 
-    for($i = 1; $i < count($data); $i++){
-        $content[$i]['name'] = $data[$i][0];
-        $content[$i]['email'] = $data[$i][1];
-        $content[$i]['password'] = $data[$i][2];
-    }
-
-    dd($content);
-
-    die();
     return redirect()->back()->with('success','Data Imported Successfully');
 });
 

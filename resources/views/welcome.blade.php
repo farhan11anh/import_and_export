@@ -85,11 +85,12 @@
                 </div>
 
                 <div class="modal-body">
-                    <form method="POST" enctype="multipart/form-data">
+                    <form action="/import" method="POST" enctype="multipart/form-data">
                         @csrf
                         <div class="input-group mb-3">
                             <input type="file" name="file" id="filep" class="form-control">
-                            <button id="previewz" class="btn btn-primary" type="submit">Preview</button>
+                            <button id="previewz" class="btn btn-primary" type="button">Preview</button>
+                            <button id="submit-btn" class="btn btn-primary hide" type="submit">Submit</button>
                         </div>
                     </form>
 
@@ -109,8 +110,6 @@
 
                         </tbody>
                     </table>
-                    <button id="submit-btn" class="btn btn-primary hide" type="submit">Submit</button>
-
                 </div>
             </div>
         </div>
