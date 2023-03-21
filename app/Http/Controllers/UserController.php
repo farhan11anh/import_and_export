@@ -44,11 +44,11 @@ class UserController extends Controller
     }
 
     public function preview(Request $request){
-        dd($request->all());
+        // dd($request->file('file')->getRealPath());
         $path = $request->file('file')->getRealPath();
         $data = Excel::toArray('', $path, null, \Maatwebsite\Excel\Excel::TSV)[0];
         $header = $data[0];
-        var_dump(count($header));
+        // var_dump(count($header));
 
         for($i = 1; $i < count($data); $i++){
             $content[$i]['name'] = $data[$i][0];
@@ -59,11 +59,14 @@ class UserController extends Controller
         // dd($content);
         // echo $content;
         // echo 'aaa';
-        $response = array(
-            'status' => 'success',
-            'msg' => 'Setting created successfully',
-        );
-        return($response);
+        // $response = [
+        //     'status' => 'success',
+        //     'msg' => 'Setting created successfully',
+        //     'content' => $content
+        // ];
+
+        $response['status'] = 'success';
+        return response()->json($response);
 
     }
 }
